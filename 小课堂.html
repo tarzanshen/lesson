@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>有限状态机是什么？</title>
+
+    <link rel="stylesheet" href="https://ptteng.github.io/PPT/css/reveal/reveal.css">
+
+    <!-- PPT主题，可以在/css/reveal/theme/中选择其他主题，目前暂时只能使用该模板 -->
+    <link rel="stylesheet" href="https://ptteng.github.io/PPT/css/reveal/theme/ptt.css">
+
+    <!-- syntax highlighting 代码高亮主题 -->
+    <link rel="stylesheet" href="https://ptteng.github.io/PPT/lib/reveal/css/zenburn.css">
+
+    <!-- 打印和PDF输出样式 -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'https://ptteng.github.io/PPT/css/reveal/print/pdf.css' : 'https://ptteng.github.io/PPT/css/reveal/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<img src="https://ptteng.github.io/PPT/img/demo/logo.png" alt="" usemap="#pttmap" class="base-logo">
+<map name="pttmap">
+    <area shape="rect" coords="0,0,276,58" href="http://www.jnshu.com" alt="" target="_blank"/>
+</map>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h4>登录之后，在其他页面怎么判断是否已经登录？</h4>
+
+            <h3></h3>
+
+            <p style="text-align: center;">分享人：沈沪生</p>
+        </section>
+        <section>
+            <p>目录</p>
+            <p>1.背景介绍</p>
+            <p>2.知识剖析</p>
+            <p>3.常见问题</p>
+            <p>4.解决方案</p>
+            <p>5.编码实战</p>
+            <p>6.扩展思考</p>
+            <p>7.参考文献</p>
+            <p>8.更多讨论</p>
+        </section>
+        <section>
+            <h3>1.背景介绍</h3>
+        </section>
+        <section>
+                
+            <p style="text-align: left">
+                登录功能，是前端经常要完成的需求之一。
+
+
+                一个 网站有很多的敏感操作操作是必须要用户登陆才能进行操作的，比如收藏，点赞什么的，
+
+
+                那么登陆之后,其他页面是怎么判断是否已经登录的呢?
+
+            </p>
+        </section>
+        <section>
+            <h3>2.知识剖析</h3>
+        </section>
+        <section>
+                
+            <p style="text-align: left">
+                在搭建的系统中，最基本的登录都是必须的，结合Vue的路由，涉及最多的就是登录状态的判断。也就是说，如果一个组件要校验登录状态，则在用户初始进入时，就要去判断用户是否登录，在任务五的时候，制作了一个简单的登录界面，通过ajax将登录信息传送的后台完成校验完成登录，但是如果从地址栏直接输入其他页面的地址，身份的验证该如何完成呢？
+               需要登录的网站信息以及操作都不是公开的,所以存在一种身份验证机制,一般而言这种机制是存在于服务器上的.
+
+                获取新的信息或者关键操作都会向服务器发送请求,请求则包含各种信息,其中就包括此时的身份信息.服务器通过这些信息来判断是否已经登陆.
+
+            </p>
+           
+        </section>
+       
+       
+        <section>
+            <h3>3.常见问题</h3>
+            
+        </section>
+        <section>
+                <p>如何实现前端判断是否已经登录</p>
+                
+        </section>
+       
+              
+        <section>
+            <h3>4.解决方案</h3>
+        </section>
+        <section>
+                <p>
+                        我们在这里使用导航守卫，也叫路由守卫，“导航”表示路由正在发生改变，正如其名，vue-router 提供的导航守卫主要用来通过跳转或取消的方式守卫导航。有多种机会植入路由导航过程中：全局的, 单个路由独享的, 或者组件级的。
+
+                        记住参数或查询的改变并不会触发进入/离开的导航守卫。你可以通过观察 $route 对象来应对这些变化，或使用 beforeRouteUpdate 的组件内守卫。
+                </p>
+               
+        </section>
+       
+        <section>
+            <h3>5.编码实战</h3>    
+            
+        </section>
+        <section>
+                <p> next(): 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。</p>
+
+                <p> next(false): 中断当前的导航。如果浏览器的 URL 改变了 (可能是用户手动或者浏览器后退按钮)，那么 URL 地址会重置到 from 路由对应的地址。</p>
+                 
+        </section>
+        <section>
+                <p> next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。你可以向 next 传递任意位置对象，且允许设置诸如 replace: true、name: 'home' 之类的选项以及任何用在 router-link 的 to prop 或 router.push 中的选项。</p>
+                        
+                <p> next(error): (2.4.0+) 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</p>
+        
+        </section>
+        <section>
+            <h3>6.扩展思考</h3>
+        </section>
+        <section>
+           <p>除了router.beforeeach全局前置守卫外还有哪些可以使用</p>
+            
+        </section>
+        <section>
+            <p>全局后置守卫</p>
+                <p style="text-align: left">
+                    <code>
+                        <pre>
+                            
+router.afterEach((to, from) => {
+    // ...
+  })
+                        </pre>
+                    </code>
+                </p>
+                
+               
+        </section>
+        <section>
+                <p>
+                        单独路由独享守卫（与全局一致，可单独对某个路由进行配置）
+                </p>
+                <p style="text-align: left">
+                    <code>
+                        <pre>
+
+const router = new VueRouter({
+    routes: [
+      {
+        path: '/foo',
+        component: Foo,
+        beforeEnter: (to, from, next) => {
+          // ...
+        }
+      }
+    ]
+                        </pre>
+                    </code>
+                </p>
+        </section>
+        <section>
+                <p>组件内部路由守卫（可写在与生命周期同级位置）</p>
+                <p style="text-align: left">
+                <code>
+                    <pre>
+
+beforeRouteEnter (to, from, next) {
+    ...
+  },
+  beforeRouteUpdate (to, from, next) {
+    ...
+  },
+  beforeRouteLeave (to, from, next) {
+    ...
+  }
+                    </pre>
+                </code>
+                </p>
+        </section>
+        <section>
+            <h3>7.参考文献</h3>
+        </section>
+        <section>
+            <p>https://www.cnblogs.com/lyr1213/p/9294909.html</p>
+            <p>https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB</p>
+            <p>https://blog.csdn.net/helenwei2017/article/details/80508239</p>
+        </section>
+        <section>
+            <h3>8.更多讨论</h3>
+        </section>
+
+        <section>
+            <h4>感谢观看</h4>
+            <p>
+                
+            </p>
+        </section>
+    </div>
+</div>
+<script src="https://ptteng.github.io/PPT/lib/reveal/js/head.min.js"></script>
+<script src="https://ptteng.github.io/PPT/lib/reveal/reveal.js"></script>
+
+<script>
+    // 以下为常见配置属性的默认值
+    // {
+    // 	controls: true, // 是否在右下角展示控制条
+    // 	progress: true, // 是否显示演示的进度条
+    // 	slideNumber: false, // 是否显示当前幻灯片的页数编号，也可以使用代码slideNumber: 'c / t' ，表示当前页/总页数。
+    // 	history: false, // 是否将每个幻灯片改变加入到浏览器的历史记录中去
+    // 	keyboard: true, // 是否启用键盘快捷键来导航
+    // 	overview: true, // 是否启用幻灯片的概览模式，可使用"Esc"或"o"键来切换概览模式
+    // 	center: true, // 是否将幻灯片垂直居中
+    // 	touch: true, // 是否在触屏设备上启用触
+    Reveal.initialize({
+        history: true,
+        dependencies: [
+            {src: 'https://ptteng.github.io/PPT/plugin/markdown/marked.js'},
+            {src: 'https://ptteng.github.io/PPT/plugin/markdown/markdown.js'},
+            {src: 'https://ptteng.github.io/PPT/plugin/notes/notes.js', async: true},
+            {
+                src: 'https://ptteng.github.io/PPT/plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            }
+        ]
+    });
+</script>
+</body>
+</html>
