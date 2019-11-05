@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>有限状态机是什么？</title>
+
+    <link rel="stylesheet" href="https://ptteng.github.io/PPT/css/reveal/reveal.css">
+
+    <!-- PPT主题，可以在/css/reveal/theme/中选择其他主题，目前暂时只能使用该模板 -->
+    <link rel="stylesheet" href="https://ptteng.github.io/PPT/css/reveal/theme/ptt.css">
+
+    <!-- syntax highlighting 代码高亮主题 -->
+    <link rel="stylesheet" href="https://ptteng.github.io/PPT/lib/reveal/css/zenburn.css">
+
+    <!-- 打印和PDF输出样式 -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'https://ptteng.github.io/PPT/css/reveal/print/pdf.css' : 'https://ptteng.github.io/PPT/css/reveal/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<img src="https://ptteng.github.io/PPT/img/demo/logo.png" alt="" usemap="#pttmap" class="base-logo">
+<map name="pttmap">
+    <area shape="rect" coords="0,0,276,58" href="http://www.jnshu.com" alt="" target="_blank"/>
+</map>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h4>有哪些常见的验证表单方式（即时输入验证，失去焦点验证等），他们各自的优缺点是什么？</h4>
+
+            <h3></h3>
+
+            <p style="text-align: center;">分享人：沈沪生</p>
+        </section>
+        <section>
+            <p>目录</p>
+            <p>1.背景介绍</p>
+            <p>2.知识剖析</p>
+            <p>3.常见问题</p>
+            <p>4.解决方案</p>
+            <p>5.编码实战</p>
+            <p>6.扩展思考</p>
+            <p>7.参考文献</p>
+            <p>8.更多讨论</p>
+        </section>
+        <section>
+            <h3>1.背景介绍</h3>
+        </section>
+        <section>
+                
+            <p style="text-align: left">
+                    任何可以交互的站点都有输入表单，只要有可能，就应该对用户输入的数据进行验证。无论服务器后端是什么样的系统，
+                    都不愿意把时间浪费在一些无效的信息上，必须对表单数据进行校验，若有不符合规定的表单输入，应及时返回并给出相应的提示信息。
+
+            </p>
+        </section>
+        <section>
+            <h3>2.知识剖析</h3>
+        </section>
+        <section>
+                
+            <p>
+                什么是表单验证？表单验证的作用
+            </p>
+            <p style="text-align: left">
+                    表单是根据用户传递的不同参数，生成不同的表单，如：每当人们注册一个账号，他都会需要经过表单验证这一说，其中会有那些数据呢，
+                    账号是必须要有的，当然有了账号必须要有密码，这些都有了还缺少什么数据，我们首先想到的就是登陆和注册，先粗略的讲一下这些表单验证的原理是什么，
+                    首先我们都会知道如果你有账号那么你就不用再重新注册一个账号了，我们就先省略注册账号的过程，现在比如说我现在要登陆QQ，
+                    我们先把密码和账号分别对应的写在相应的框框里面，当然密码和账号是正确的.
+            </p>
+        </section>
+       <section>
+           <p style="text-align: left">
+                我们现在需要登陆一下它，我们只知道他表面的情况，
+                而不知道他内部有什么工作，只知道表面的QQ正在登陆中，其中的过程还需要等待几秒，下面我来说一下这几秒发生了什么事情，首先，
+                当我们点击登陆的时候一道数据请求发送给了QQ公司里面的服务器，在经过服务器在链接到后台的数据库，在数据库中查询是否有这一个账号，
+                如果有则验证输入的密码是否正确，正确就把允许登陆的消息发给服务器，
+                服务器在发给我们的QQ客户端，这就是一个完整的表单验证的过程，简称人机交互事件。
+           </p>
+       </section>
+       
+        <section>
+            <h3>3.常见问题</h3>
+            
+        </section>
+        <section>
+                <p>常见的表单验证的使用方法</p>
+                
+        </section>
+       
+              
+        <section>
+            <h3>4.解决方案</h3>
+        </section>
+        <section>
+                <p>
+                  原生的表单验证
+                </p>
+                <p style="text-align: left">
+                        输入实时检测校验
+                        <code>
+                            <pre>
+                                    <input type="text" placeholder="只能英文、数字，英文开头" onKeyUp = "value = value.replace(/[^a-z0-9]|^[^a-z]/ig,'')" />
+                            </pre>
+                        </code>
+                </p>
+        </section>
+       <section>
+           <p style="text-align:left;">
+                离开(失去)焦点时验证
+                <code>
+                        <pre>
+                                <input type="email" id="email" name="email" placeholder="请输入邮想" οnblur="isEmail(this.value);" />
+                                function isEmail(strEmail) {
+                                    var flag = strEmail.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);
+                                    if (flag == -1){
+                                        alert("邮箱不不正确");
+                                    }
+                                }
+                                
+                        </pre>
+                </code>
+           </p>
+       </section>
+       <section>
+            <p style="text-align:left;">
+            提交表单验证
+            <code>
+                <pre>
+                        <form action="Controller/method" method="post">
+                            <input type="text" name="name"/>
+                            <input type="submit" value="提交"/>
+                            <button type="submit">提交</button>
+                        </form>
+                </pre>
+            </code>
+            </p>
+       </section>
+        <section>
+            <h3>5.编码实战</h3>    
+            
+        </section>
+        
+        <section>
+            <h3>6.扩展思考</h3>
+        </section>
+        <section>
+           <p>这些验证的优缺点各是什么？</p>
+            
+        </section>
+        <section>
+                提交时验证：
+
+                优点:性能上更好；缺点：假如输入项过多的话，会影响用户体验
+                
+                适合登陆账号时检测输入内容是否合法
+                
+                onBlur:
+                
+                优点：用户体验好；缺点：必须鼠标点击别处后才能知道结果
+                
+                常见于输入验证码，注册等功能
+                
+                onKeyup:
+                
+                优点：反应迅速，体验佳；缺点：用在某些地方可能看起来很蠢或影响性能，比如正在输入验证码或者检测是否重名等
+                
+                适用于检测数据类型，比如注册页面的密码项
+               
+        </section>
+        
+        
+        <section>
+            <h3>7.参考文献</h3>
+        </section>
+        <section>
+            <p>https://www.cnblogs.com/lyr1213/p/9294909.html</p>
+            <p>https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB</p>
+            <p>https://blog.csdn.net/helenwei2017/article/details/80508239</p>
+        </section>
+        <section>
+            <h3>8.更多讨论</h3>
+        </section>
+
+        <section>
+            <h4>感谢观看</h4>
+            <p>
+                
+            </p>
+        </section>
+    </div>
+</div>
+<script src="https://ptteng.github.io/PPT/lib/reveal/js/head.min.js"></script>
+<script src="https://ptteng.github.io/PPT/lib/reveal/reveal.js"></script>
+
+<script>
+    // 以下为常见配置属性的默认值
+    // {
+    // 	controls: true, // 是否在右下角展示控制条
+    // 	progress: true, // 是否显示演示的进度条
+    // 	slideNumber: false, // 是否显示当前幻灯片的页数编号，也可以使用代码slideNumber: 'c / t' ，表示当前页/总页数。
+    // 	history: false, // 是否将每个幻灯片改变加入到浏览器的历史记录中去
+    // 	keyboard: true, // 是否启用键盘快捷键来导航
+    // 	overview: true, // 是否启用幻灯片的概览模式，可使用"Esc"或"o"键来切换概览模式
+    // 	center: true, // 是否将幻灯片垂直居中
+    // 	touch: true, // 是否在触屏设备上启用触
+    Reveal.initialize({
+        history: true,
+        dependencies: [
+            {src: 'https://ptteng.github.io/PPT/plugin/markdown/marked.js'},
+            {src: 'https://ptteng.github.io/PPT/plugin/markdown/markdown.js'},
+            {src: 'https://ptteng.github.io/PPT/plugin/notes/notes.js', async: true},
+            {
+                src: 'https://ptteng.github.io/PPT/plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            }
+        ]
+    });
+</script>
+</body>
+</html>
